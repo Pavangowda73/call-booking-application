@@ -1,34 +1,31 @@
 const nodemailer = require("nodemailer");
-exports.sendMail = async (to="bar@example.com", name="User Name", forRole="user") => {
 
+exports.sendMail = async (to="bar@example.com", name="User Name", forRole="user") => {
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    host: "smtp.gmail.com",  // Use Gmail's SMTP server
+    port: 587,              // Use port 587 for TLS
+    secure: false,          // false for 587 (TLS)
     auth: {
-      user: 'pavanpavan073384@gmail.com', // generated ethereal user
-      pass: 'gfrhghfghg', // generated ethereal password
+      user: 'pavanpavan073384@gmail.com', // Your Gmail address
+      pass: 'your-app-password',  // Use the generated app password here
     },
   });
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Admin" <pavanpavan073384@gmail.com>', // sender address
-    to, // list of receivers
-    subject: "Booking Confirmation ✔", // Subject line
-    text: "Your booking is confirmed. Somebody from the team contact you soon.", // plain text body
-    html: forRole === 'user' ? getUserTemplate(name) : getAdminTemplate()
+    to,  // list of receivers
+    subject: "Booking Confirmation ✔",  // Subject line
+    text: "Your booking is confirmed. Somebody from the team will contact you soon.", // plain text body
+    html: forRole === 'user' ? getUserTemplate(name) : getAdminTemplate()  // Use the appropriate template
   });
 
   console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
   // Preview only available when sending through an Ethereal account
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
-
 
 const getUserTemplate = (name = 'User') => `<!DOCTYPE html>
 <html lang="en">
@@ -57,7 +54,7 @@ const getUserTemplate = (name = 'User') => `<!DOCTYPE html>
             <div style="font-size: x-large;">Hii ${name}</div>
             <img style="margin-top: .5rem;" alt="" width="50" src="https://png2.cleanpng.com/sh/f0a2f5035da51a37ce7d5a1959f92d02/L0KzQYm3U8E2N51rfZH0aYP2gLBuTfNpbZRwRd9qcnuwc7F0kQV1baMygdV4boOwc73wkL1ieqUyfARuZX6whLrqi71uaaNwRadqYXK0c4a4UBRiOZI7RqMDOEO6RISCUcUzOWI7S6U9NUK4Qoa1kP5o/kisspng-check-mark-computer-icons-clip-art-green-tick-mark-5aab1c513da1a6.1883743915211633452525.png" />
             <div class="text-success mt-2">
-                Your booking is confirmed. Somebody from the team contact you soon.
+                Your booking is confirmed. Somebody from the team will contact you soon.
             </div>
         </div>
     </div>
